@@ -14,6 +14,12 @@ class Users extends Component {
             .then(data => this.setState({users: data}));
     }
 
+    getUserInformation = (username, context) => {
+        fetch(`https://api.github.com/users/${username}`)
+            .then(res => res.json())
+            .then(data => console.log(data));
+        };
+
     render() {
         const users = this.state.users.map(user => (
             <div className="card m-3">
@@ -35,17 +41,13 @@ class Users extends Component {
                                 <div className="col-md-3"/>
                                 <div className="col-md-3"/>
                                 <div className="col-md-3">
-                                    <button className="btn">Details</button>
-
+                                    <button className="btn" onClick={this.getUserInformation.bind(this, user.login)}>Details</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
-
         ));
         return (
             <div className="card">
