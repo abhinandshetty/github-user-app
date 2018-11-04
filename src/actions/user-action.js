@@ -1,12 +1,15 @@
 import {FETCH_USER, FETCH_USER_REPOS, FETCH_USERS} from "../actions/types";
 
-export const fetchUsers = () => dispatch => {
+export const fetchUsers = (callback =() =>{}) => dispatch => {
     fetch('https://api.github.com/users')
         .then(res => res.json())
-        .then(users => dispatch({
-            type: FETCH_USERS,
-            payload: users
-        }));
+        .then(users => {
+            dispatch({
+                type: FETCH_USERS,
+                payload: users
+            });
+            callback();
+        });
 };
 
 export const searchUser = (username) => dispatch => {

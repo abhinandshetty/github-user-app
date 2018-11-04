@@ -8,13 +8,14 @@ class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            users: [],
-            userRepo: []
+           filterValue: ''
         }
     }
 
     componentDidMount() {
-        this.props.fetchUsers();
+        this.props.fetchUsers(()=>{
+            this.filterList();
+        });
     }
 
     getUserInformation = (username) => {
@@ -29,8 +30,41 @@ class Users extends Component {
         if(e.target.value) {
             this.getUserInformation(e.target.value)
         } else {
-            this.props.fetchUsers();
+            this.props.fetchUsers(()=>{
+                this.filterList();
+            });
         }
+    };
+
+    filterList = () => {
+        const filterValue = this.refs.filterCriteria.value;
+        switch (filterValue) {
+            case 'ascName' :
+                this.props.users.sort(function(prev, next){
+                    if (prev.login.toLowerCase() < next.login.toLowerCase())
+                        return -1;
+                    if (prev.login.toLowerCase() > next.login.toLowerCase())
+                        return 1;
+                    return 0
+                });
+                break;
+            case 'descName':
+                this.props.users.sort(function(prev, next){
+                    if (prev.login.toLowerCase() > next.login.toLowerCase())
+                        return -1;
+                    if (prev.login.toLowerCase() < next.login.toLowerCase())
+                        return 1;
+                    return 0
+                });
+                break;
+            case 'ascRank':
+                break;
+            case 'descRank':
+                break;
+            default:
+                break;
+        }
+        this.setState({ filterValue: filterValue});
     };
 
     render() {
@@ -74,7 +108,9 @@ class Users extends Component {
                         <div className="col-lg-3 col-md-3 col-sm-3"/>
                         <div className="col-lg-3 col-md-3 col-sm-3">
                             <div className="float-left">
-                                <select type="text" className="form-control">
+                                <select type="text" ref="filterCriteria" className="form-control" onChange={this.filterList.bind(this)}>
+                                    <option value="ascName">Sort By Name (A-Z)</option>
+                                    <option value="descName">Sort By Name (Z-A)</option>
                                     <option value="ascRank">Rank Low to High</option>
                                     <option value="descRank">Rank High to Low</option>
                                 </select>
