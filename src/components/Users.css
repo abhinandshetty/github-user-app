@@ -10,3 +10,28 @@
     object-fit: cover;
     object-position: center right;
 }
+
+.main-body {
+    background-color: lightgrey;
+}
+
+.main-header{
+    background-color: #0077B5 !important;
+}
+
+.user-card {
+    box-shadow: 0 10px 14px -2px grey;
+}
+
+.detail-button {
+    margin-top: 100%;
+    border: 1px solid #0077B5 !important;
+    color: #0077B5;
+    background-color: white;
+}
+.detail-button:hover {
+    margin-top: 100%;
+    border: 1px solid white !important;
+    color: white;
+    background-color: #0077B5;
+}

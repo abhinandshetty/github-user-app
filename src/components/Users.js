@@ -44,7 +44,7 @@ class Users extends Component {
 
         ));
         const users = this.props.users.map(user => (
-            <div className="card m-3">
+            <div className="card m-3 user-card">
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-3">
@@ -53,12 +53,12 @@ class Users extends Component {
                             </div>
                         </div>
                         <div className="col-md-7">
-                            <h5>{user.login}</h5>
+                            <h4>{user.login}</h4>
                             <h6>Profile URL : {user.url}</h6>
                             <h6>Type : {user.type}</h6>
                         </div>
                         <div className="col-md-2">
-                             <button className="btn" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
+                             <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
                         </div>
                     </div>
                     <div className="repo-info">
@@ -69,7 +69,7 @@ class Users extends Component {
         ));
         return (
             <div className="card">
-                <div className="card-header sticky-top" style={{'backgroundColor': '#0077B5'}}>
+                <div className="card-header sticky-top main-header">
                     <div className="row">
                         <div className="col-lg-3 col-md-3 col-sm-3"/>
                         <div className="col-lg-3 col-md-3 col-sm-3">
@@ -88,7 +88,7 @@ class Users extends Component {
                         <div className="col-lg-3 col-md-3 col-sm-3"/>
                     </div>
                 </div>
-                <div className="card-body">
+                <div className="card-body main-body">
                     <div className="row">
                         <div className="col-lg-2"/>
                         <div className="col-lg-8">
