@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 
 class Repositories extends Component {
-    constructor(props) {
-        super(props);
-    }
+
     renderUserRepositories =()=>{
         return this.props.repos.map((repo,i) => (
             <div className='respository'>

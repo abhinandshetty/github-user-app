@@ -3,7 +3,6 @@ import './Users.css';
 import {connect} from 'react-redux';
 import {fetchUsers, searchUser, fetchUserRepositories} from '../actions/user-action'
 import PropTypes from 'prop-types'
-import Repositories from './Repositories';
 import User from './User'
 
 class Users extends Component {
@@ -24,22 +23,6 @@ class Users extends Component {
 
     getUserInformation = (username) => {
         this.props.searchUser(username);
-    };
-
-    getUserRepos = (username, context) => {
-        if(!this.state.hideDetails) {
-            this.setState({
-                hideDetails: !this.state.hideDetails,
-            })
-        } else {
-            this.props.fetchUserRepositories(username, () => {
-                this.setState({
-                    hideDetails: !this.state.hideDetails,
-                    currentUser: username
-                })
-            });
-
-        }
     };
 
     searchKeyUp =(e)=>{
@@ -84,20 +67,8 @@ class Users extends Component {
     };
 
     renderUserList = () => {
-        return this.props.users.map(user => (
-            <div className="card m-3 user-card">
-                <div className="card-body">
-                    <div className="row">
-                        <User user={user}/>
-                        <div className="col-md-2 col-lg-2">
-                            <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
-                        </div>
-                    </div>
-                    <div className="repo-info" hidden={this.state.hideDetails}>
-                        {this.state.currentUser === user.login? <Repositories repos={this.props.repos}/>:null}
-                    </div>
-                </div>
-            </div>
+        return this.props.users.map((user,i) => (
+            <User user={user} key={i}/>
         ));
     };
 
