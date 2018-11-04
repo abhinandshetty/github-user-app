@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import './Users.css';
 import {connect} from 'react-redux';
-import {fetchUsers} from '../actions/user-action'
+import {fetchUsers, fetchUserInformation} from '../actions/user-action'
+import PropTypes from 'prop-types'
 
 class Users extends Component {
     constructor(props) {
@@ -17,9 +18,7 @@ class Users extends Component {
     }
 
     getUserInformation = (username) => {
-        fetch(`https://api.github.com/users/${username}`)
-            .then(res => res.json())
-            .then(data => this.setState({users: [data]}));
+        this.props.fetchUserInformation(username)
     };
 
     getUserRepos = (username, context) => {
@@ -107,7 +106,12 @@ class Users extends Component {
     }
 }
 
+Users.prototypes = {
+    fetchUsers: PropTypes.func.isRequired,
+    fetchUserInformation: PropTypes.func.isRequired
+};
+
 const mapStateToProps = state => ({
     users : state.users.userlist
 });
-export default connect(mapStateToProps,{ fetchUsers })(Users);
+export default connect(mapStateToProps,{ fetchUsers, fetchUserInformation })(Users);
