@@ -19,6 +19,10 @@ export default function (state = initialState, action) {
                 userlist: action.payload
             };
         case FETCH_USER_REPOS:
+            return {
+                ...state,
+                repos: action.payload
+            };
         default:
             return state;
     }

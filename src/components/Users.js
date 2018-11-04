@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import './Users.css';
 import {connect} from 'react-redux';
-import {fetchUsers, fetchUserInformation} from '../actions/user-action'
+import {fetchUsers, searchUser, fetchUserRepositories} from '../actions/user-action'
 import PropTypes from 'prop-types'
 
 class Users extends Component {
@@ -18,13 +18,11 @@ class Users extends Component {
     }
 
     getUserInformation = (username) => {
-        this.props.fetchUserInformation(username)
+        this.props.searchUser(username);
     };
 
     getUserRepos = (username, context) => {
-        fetch(`https://api.github.com/users/${username}/repos`)
-            .then(res => res.json())
-            .then(data => this.setState({userRepo: data}));
+        this.props.fetchUserRepositories(username);
     };
 
     searchKeyUp =(e)=>{
@@ -36,7 +34,7 @@ class Users extends Component {
     };
 
     render() {
-        const userRepo = this.state.userRepo.map((repo,i) => (
+        const userRepo = this.props.repos.map((repo,i) => (
             <div>
                 <div className="row">
                     Repository {i+1} : {repo.name}
@@ -51,9 +49,7 @@ class Users extends Component {
                     <div className="row">
                         <div className="col-md-3">
                             <div className="wrapper">
-                                <img src={user.avatar_url}
-                                     alt=""
-                                     className="image-cover"/>
+                                <img src={user.avatar_url} alt="" className="image-cover"/>
                             </div>
                         </div>
                         <div className="col-md-7">
@@ -75,8 +71,8 @@ class Users extends Component {
             <div className="card">
                 <div className="card-header sticky-top" style={{'backgroundColor': '#0077B5'}}>
                     <div className="row">
-                        <div className="col-lg-3"/>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-3 col-sm-3"/>
+                        <div className="col-lg-3 col-md-3 col-sm-3">
                             <div className="float-left">
                                 <select type="text" className="form-control">
                                     <option value="ascRank">Rank Low to High</option>
@@ -84,12 +80,12 @@ class Users extends Component {
                                 </select>
                             </div>
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-3 col-sm-3">
                             <div className="float-right">
                                 <input type="text" className="form-control" placeholder="Search User" onKeyUp={this.searchKeyUp}/>
                             </div>
                         </div>
-                        <div className="col-lg-3"/>
+                        <div className="col-lg-3 col-md-3 col-sm-3"/>
                     </div>
                 </div>
                 <div className="card-body">
@@ -108,10 +104,11 @@ class Users extends Component {
 
 Users.prototypes = {
     fetchUsers: PropTypes.func.isRequired,
-    fetchUserInformation: PropTypes.func.isRequired
+    searchUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    users : state.users.userlist
+    users : state.users.userlist,
+    repos: state.users.repos
 });
-export default connect(mapStateToProps,{ fetchUsers, fetchUserInformation })(Users);
+export default connect(mapStateToProps,{ fetchUsers, searchUser, fetchUserRepositories })(Users);
