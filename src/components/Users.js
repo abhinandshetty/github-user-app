@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import './Users.css';
+import {connect} from 'react-redux';
+import {fetchUsers} from '../actions/user-action'
+
 class Users extends Component {
     constructor(props) {
         super(props);
@@ -10,14 +13,8 @@ class Users extends Component {
     }
 
     componentDidMount() {
-        this.getAllUsers();
+        this.props.fetchUsers();
     }
-
-    getAllUsers = () => {
-        fetch('https://api.github.com/users')
-            .then(res => res.json())
-            .then(data => this.setState({users: data}));
-    };
 
     getUserInformation = (username) => {
         fetch(`https://api.github.com/users/${username}`)
@@ -30,11 +27,12 @@ class Users extends Component {
             .then(res => res.json())
             .then(data => this.setState({userRepo: data}));
     };
+
     searchKeyUp =(e)=>{
         if(e.target.value) {
             this.getUserInformation(e.target.value)
         } else {
-            this.getAllUsers();
+            this.props.fetchUsers();
         }
     };
 
@@ -48,7 +46,7 @@ class Users extends Component {
             </div>
 
         ));
-        const users = this.state.users.map(user => (
+        const users = this.props.users.map(user => (
             <div className="card m-3">
                 <div className="card-body">
                     <div className="row">
@@ -109,4 +107,7 @@ class Users extends Component {
     }
 }
 
-export default Users;
+const mapStateToProps = state => ({
+    users : state.users.userlist
+});
+export default connect(mapStateToProps,{ fetchUsers })(Users);
