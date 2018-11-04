@@ -9,7 +9,8 @@ class Users extends Component {
         super(props);
         this.state = {
             filterValue: '',
-            hideDetails: true
+            hideDetails: true,
+            currentUser: ''
         }
     }
 
@@ -24,8 +25,19 @@ class Users extends Component {
     };
 
     getUserRepos = (username, context) => {
-        this.props.fetchUserRepositories(username);
-        this.setState({hideDetails: !this.state.hideDetails})
+        if(!this.state.hideDetails) {
+            this.setState({
+                hideDetails: !this.state.hideDetails,
+            })
+        } else {
+            this.props.fetchUserRepositories(username, () => {
+                this.setState({
+                    hideDetails: !this.state.hideDetails,
+                    currentUser: username
+                })
+            });
+
+        }
     };
 
     searchKeyUp =(e)=>{
@@ -100,7 +112,7 @@ class Users extends Component {
                         </div>
                     </div>
                     <div className="repo-info" hidden={this.state.hideDetails}>
-                        {this.renderUserRepositories()}
+                        {this.state.currentUser === user.login? this.renderUserRepositories():null}
                     </div>
                 </div>
             </div>

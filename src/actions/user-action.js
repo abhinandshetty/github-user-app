@@ -21,11 +21,14 @@ export const searchUser = (username) => dispatch => {
         }));
 };
 
-export const fetchUserRepositories = (username) => dispatch => {
+export const fetchUserRepositories = (username, callback = () =>{}) => dispatch => {
     fetch(`https://api.github.com/users/${username}/repos`)
         .then(res => res.json())
-        .then(repos => dispatch({
-            type: FETCH_USER_REPOS,
-            payload: repos
-        }));
+        .then(repos => {
+            dispatch({
+                type: FETCH_USER_REPOS,
+                payload: repos
+            });
+            callback();
+        });
 };
