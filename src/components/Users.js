@@ -97,13 +97,8 @@ class Users extends Component {
                     </div>
                 </div>
                 <div className="card-body main-body">
-                    <div className="row">
-                        <div className="col-lg-2 col-md-2"/>
-                        <div className="col-lg-8 col-md-8">
-                            {this.renderUserList()}
-                        </div>
-                        <div className="col-lg-2 col-md-2"/>
-                    </div>
+                   {this.renderUserList()}
+
                 </div>
             </div>
         );

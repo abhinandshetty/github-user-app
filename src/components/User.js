@@ -4,6 +4,8 @@ import './Users.css';
 import {fetchUserRepositories} from '../actions/user-action'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux';
+import ProfileDetails from "./ProfileDetails";
+import Image from "./Image";
 
 
 class User extends Component {
@@ -32,32 +34,29 @@ class User extends Component {
 
     render() {
         return (
-            <div>
-                <div className="card m-3 user-card">
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="col-md-3 col-lg-3">
-                                <div className="wrapper">
-                                    <img src={this.props.user.avatar_url} alt="" className="image-cover"/>
+            <div className="row">
+                <div className="col-lg-2 col-md-2"/>
+                <div className="col-lg-8 col-md-8">
+                    <div className="card m-3 user-card">
+                        <div className="card-body">
+                            <div className="row">
+                                <div className="col-md-3 col-lg-3">
+                                    <Image url={this.props.user.avatar_url}/>
+                                </div>
+                                <ProfileDetails user={this.props.user}/>
+                                <div className="col-md-2 col-lg-2">
+                                    <button className="btn detail-button"
+                                            onClick={this.getUserRepos.bind(this, this.props.user.login)}>
+                                        Details
+                                    </button>
                                 </div>
                             </div>
-                            <div className="col-md-7 col-lg-7">
-                                <h4>{this.props.user.login}</h4>
-                                <h6>Profile URL : {this.props.user.url}</h6>
-                                <h6>Type : {this.props.user.type}</h6>
-                            </div>
-                            <div className="col-md-2 col-lg-2">
-                                <button className="btn detail-button"
-                                        onClick={this.getUserRepos.bind(this, this.props.user.login)}>
-                                    Details
-                                </button>
-                            </div>
-                        </div>
 
-                    </div>
-                    <div className="repo-info" hidden={this.state.hideDetails}>
-                        {this.state.currentUser === this.props.user.login ?
-                            <Repositories repos={this.props.repos}/> : null}
+                        </div>
+                        <div className="repo-info" hidden={this.state.hideDetails}>
+                            {this.state.currentUser === this.props.user.login ?
+                                <Repositories repos={this.props.repos}/> : null}
+                        </div>
                     </div>
                 </div>
             </div>
