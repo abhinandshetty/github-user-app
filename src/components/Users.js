@@ -3,7 +3,8 @@ import './Users.css';
 import {connect} from 'react-redux';
 import {fetchUsers, searchUser, fetchUserRepositories} from '../actions/user-action'
 import PropTypes from 'prop-types'
-import Repositories from './Repositories'
+import Repositories from './Repositories';
+import User from './User'
 
 class Users extends Component {
     constructor(props) {
@@ -82,34 +83,12 @@ class Users extends Component {
         this.setState({ filterValue: filterValue});
     };
 
-    renderUserRepositories =()=>{
-        return this.props.repos.map((repo,i) => (
-            <div className='respository'>
-                <div className="row ml-3">
-                    <div className="col-md-3"/>
-                    <div className="col-md-3">Repository {i+1}</div>
-                    <div className="col-md-6">{repo.name}</div>
-                </div>
-                <hr/>
-            </div>
-        ));
-    };
-
     renderUserList = () => {
         return this.props.users.map(user => (
             <div className="card m-3 user-card">
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-md-3 col-lg-3">
-                            <div className="wrapper">
-                                <img src={user.avatar_url} alt="" className="image-cover"/>
-                            </div>
-                        </div>
-                        <div className="col-md-7 col-lg-7">
-                            <h4>{user.login}</h4>
-                            <h6>Profile URL : {user.url}</h6>
-                            <h6>Type : {user.type}</h6>
-                        </div>
+                        <User user={user}/>
                         <div className="col-md-2 col-lg-2">
                             <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
                         </div>
