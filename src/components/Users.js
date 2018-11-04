@@ -8,7 +8,8 @@ class Users extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           filterValue: ''
+            filterValue: '',
+            hideDetails: true
         }
     }
 
@@ -24,6 +25,7 @@ class Users extends Component {
 
     getUserRepos = (username, context) => {
         this.props.fetchUserRepositories(username);
+        this.setState({hideDetails: !this.state.hideDetails})
     };
 
     searchKeyUp =(e)=>{
@@ -67,17 +69,19 @@ class Users extends Component {
         this.setState({ filterValue: filterValue});
     };
 
-    render() {
-        const userRepo = this.props.repos.map((repo,i) => (
-            <div>
+    renderUserRepositories =()=>{
+        return this.props.repos.map((repo,i) => (
+            <div data-username = {repo.owner.login}>
                 <div className="row">
                     Repository {i+1} : {repo.name}
                 </div>
                 <hr/>
             </div>
-
         ));
-        const users = this.props.users.map(user => (
+    };
+
+    renderUserList = () => {
+        return this.props.users.map(user => (
             <div className="card m-3 user-card">
                 <div className="card-body">
                     <div className="row">
@@ -92,15 +96,18 @@ class Users extends Component {
                             <h6>Type : {user.type}</h6>
                         </div>
                         <div className="col-md-2">
-                             <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
+                            <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
                         </div>
                     </div>
-                    <div className="repo-info">
-                        {userRepo}
+                    <div className="repo-info" hidden={this.state.hideDetails}>
+                        {this.renderUserRepositories()}
                     </div>
                 </div>
             </div>
         ));
+    };
+
+    render() {
         return (
             <div className="card">
                 <div className="card-header sticky-top main-header">
@@ -128,7 +135,7 @@ class Users extends Component {
                     <div className="row">
                         <div className="col-lg-2"/>
                         <div className="col-lg-8">
-                            {users}
+                            {this.renderUserList()}
                         </div>
                         <div className="col-lg-2"/>
                     </div>
