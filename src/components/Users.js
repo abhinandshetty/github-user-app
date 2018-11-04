@@ -3,6 +3,7 @@ import './Users.css';
 import {connect} from 'react-redux';
 import {fetchUsers, searchUser, fetchUserRepositories} from '../actions/user-action'
 import PropTypes from 'prop-types'
+import Repositories from './Repositories'
 
 class Users extends Component {
     constructor(props) {
@@ -83,9 +84,11 @@ class Users extends Component {
 
     renderUserRepositories =()=>{
         return this.props.repos.map((repo,i) => (
-            <div data-username = {repo.owner.login}>
-                <div className="row">
-                    Repository {i+1} : {repo.name}
+            <div className='respository'>
+                <div className="row ml-3">
+                    <div className="col-md-3"/>
+                    <div className="col-md-3">Repository {i+1}</div>
+                    <div className="col-md-6">{repo.name}</div>
                 </div>
                 <hr/>
             </div>
@@ -97,22 +100,22 @@ class Users extends Component {
             <div className="card m-3 user-card">
                 <div className="card-body">
                     <div className="row">
-                        <div className="col-md-3">
+                        <div className="col-md-3 col-lg-3">
                             <div className="wrapper">
                                 <img src={user.avatar_url} alt="" className="image-cover"/>
                             </div>
                         </div>
-                        <div className="col-md-7">
+                        <div className="col-md-7 col-lg-7">
                             <h4>{user.login}</h4>
                             <h6>Profile URL : {user.url}</h6>
                             <h6>Type : {user.type}</h6>
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md-2 col-lg-2">
                             <button className="btn detail-button" onClick={this.getUserRepos.bind(this, user.login)}>Details</button>
                         </div>
                     </div>
                     <div className="repo-info" hidden={this.state.hideDetails}>
-                        {this.state.currentUser === user.login? this.renderUserRepositories():null}
+                        {this.state.currentUser === user.login? <Repositories repos={this.props.repos}/>:null}
                     </div>
                 </div>
             </div>
@@ -145,11 +148,11 @@ class Users extends Component {
                 </div>
                 <div className="card-body main-body">
                     <div className="row">
-                        <div className="col-lg-2"/>
-                        <div className="col-lg-8">
+                        <div className="col-lg-2 col-md-2"/>
+                        <div className="col-lg-8 col-md-8">
                             {this.renderUserList()}
                         </div>
-                        <div className="col-lg-2"/>
+                        <div className="col-lg-2 col-md-2"/>
                     </div>
                 </div>
             </div>
@@ -159,7 +162,8 @@ class Users extends Component {
 
 Users.prototypes = {
     fetchUsers: PropTypes.func.isRequired,
-    searchUser: PropTypes.func.isRequired
+    searchUser: PropTypes.func.isRequired,
+    fetchUserRepositories: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
